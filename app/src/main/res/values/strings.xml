@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Developer Contacts</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Message -->
+    <string name="msg_no_internet">No internet connection</string>
+    <string name="msg_btn_ok">OK</string>
+
+    <!-- Menu -->
+    <string name="menu_search">Search</string>
+    <string name="menu_search_hint">Search name</string>
+
+    <string name="error_network">
+        No internet connection. Check your connection and try again.Mo
+    </string>
+    <string name="error_couldnt_reach_server">\"Oops! Couldn\'t reach server. Check your internet connection.\"</string>
+    <string name="oops_something_went_wrong">\"Oops! Something went wrong. Please try again.\"</string>
+
+    <string name="error_message">Having trouble at the moment, Please check your connection and try again.</string>
+
+    <string name="dlg_ok">OK</string>
+
+    <!-- Developers List -->
+    <string name="developers_list_empty">No available developers contact</string>
+    <string name="add">Add</string>
+    <string name="add_developer">Add Developer</string>
+    <string name="add_developer_success">Successfully added new Developer in Contacts</string>
+
+</resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/AndroidStudioProjects/Developers-Contact-List/app/src/main/res/layout/activity_main.xml" value="0.12" />
+        <entry key="..\:/AndroidStudioProjects/Developers-Contact-List/app/src/main/res/layout/add_developer_layout.xml" value="0.23777173913043478" />
+        <entry key="..\:/AndroidStudioProjects/Developers-Contact-List/app/src/main/res/layout/content_main.xml" value="0.18115942028985507" />
+        <entry key="..\:/AndroidStudioProjects/Developers-Contact-List/app/src/main/res/layout/developers_items.xml" value="0.20697463768115942" />
+        <entry key="..\:/AndroidStudioProjects/Developers-Contact-List/app/src/main/res/layout/fragment_add_developer.xml" value="0.23777173913043478" />
+        <entry key="..\:/AndroidStudioProjects/Developers-Contact-List/app/src/main/res/layout/fragment_developers_list.xml" value="0.20697463768115942" />
+        <entry key="..\:/AndroidStudioProjects/Developers-Contact-List/app/src/main/res/layout/search_view_layout.xml" value="0.22644927536231885" />
+        <entry key="..\:/AndroidStudioProjects/Developers-Contact-List/app/src/main/res/layout/top_appbar.xml" value="0.209375" />
+        <entry key="..\:/AndroidStudioProjects/Developers-Contact-List/app/src/main/res/menu/menu_add.xml" value="0.3546875" />
+        <entry key="..\:/AndroidStudioProjects/Developers-Contact-List/app/src/main/res/menu/menu_main.xml" value="0.234375" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

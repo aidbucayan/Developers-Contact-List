@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3D50FF</color>
+    <color name="colorPrimaryVariant">#0041E4</color>
+    <color name="colorOnPrimary">#8FA1FD</color>
+
+    <color name="colorTextPrimary">#1C1917</color>
+    <color name="colorTextSubHeader">#78716C</color>
+    <color name="colorTextButton">#000000</color>
+
+    <color name="colorBaseDark">#F5F5F4</color>
+    <color name="colorBaseLight">#FFFFFF</color>
+    <color name="colorBg">#E5E5E5</color>
+
+    <color name="colorBgShimmer">#DDDDDD</color>
+    <color name="colorCardView">#e9e9e9</color>
+
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+</resources>

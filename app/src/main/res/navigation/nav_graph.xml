@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/developersListFragment">
+
+    <fragment
+        android:id="@+id/developersListFragment"
+        android:name="com.adrian.bucayan.developercontacts.presentation.ui.list.DevelopersListFragment"
+        android:label="fragment_developers_list"
+        tools:layout="@layout/fragment_developers_list" >
+        <action
+            android:id="@+id/action_developersListFragment_to_addDeveloperFragment"
+            app:destination="@id/addDeveloperFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addDeveloperFragment"
+        android:name="com.adrian.bucayan.developercontacts.presentation.ui.add.AddDeveloperFragment"
+        android:label="fragment_add_developer"
+        tools:layout="@layout/fragment_add_developer" >
+        <action
+            android:id="@+id/action_addDeveloperFragment_to_developersListFragment"
+            app:destination="@id/developersListFragment" />
+    </fragment>
+</navigation>
