@@ -7,7 +7,9 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -40,6 +42,7 @@ class EditDeveloperFragment : Fragment(R.layout.fragment_edit_developer) {
     private val viewModel: EditDeveloperViewModel by  viewModels()
     private var selectedImage : Uri? = null
     private lateinit var developer: Developer
+    private lateinit var deleteImg : ImageView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -65,6 +68,7 @@ class EditDeveloperFragment : Fragment(R.layout.fragment_edit_developer) {
                 )
             )
 
+            deleteImg.visibility = View.GONE
             findNavController().navigate(R.id.action_editDeveloperFragment_to_developersListFragment)
         }
     }
@@ -101,6 +105,27 @@ class EditDeveloperFragment : Fragment(R.layout.fragment_edit_developer) {
                 }
             }
         }
+
+        viewModel.dataStateDeleteDeveloper.observe(viewLifecycleOwner) { dataStateDelete ->
+            when (dataStateDelete) {
+
+                is Resource.Success<StatusResponse> -> {
+                    Timber.e("dataStateDelete SUCCESS")
+                    dataStateDelete.data?.status?.let { requireContext().applicationContext.toast(it, true) }
+                    findNavController().navigate(R.id.action_editDeveloperFragment_to_developersListFragment)
+                }
+
+                is Resource.Error -> {
+                    Timber.e("dataStateDelete ERROR %s", dataStateDelete.message)
+                    requireContext().applicationContext.toast(dataStateDelete.message.toString(), true)
+                }
+
+                is Resource.Loading -> {
+                    Timber.e("dataStateDelete LOADING")
+                }
+            }
+        }
+
     }
 
     private fun requestPermission() {
@@ -165,7 +190,13 @@ class EditDeveloperFragment : Fragment(R.layout.fragment_edit_developer) {
         toolbar.inflateMenu(R.menu.menu_main)
         toolbar.title = getString(R.string.update_contact)
         toolbar.menu.clear()
+        deleteImg  = requireActivity().findViewById(R.id.topAppBar_delete)
+        deleteImg.visibility = View.VISIBLE
+        deleteImg.setOnClickListener {
+            toDeleteDeveloper(developer)
+        }
     }
+
     private fun Context.toast(message: CharSequence, isLengthLong: Boolean = true) =
         Toast.makeText(
             this, message, if (isLengthLong) {
@@ -174,6 +205,20 @@ class EditDeveloperFragment : Fragment(R.layout.fragment_edit_developer) {
                 Toast.LENGTH_SHORT
             }
         ).show()
+
+    private fun toDeleteDeveloper(developer: Developer) {
+
+         viewModel.setGetDeleteDevelopersEvent(DeleteDeveloperIntent.GetDeleteDeveloperIntents,
+             DeveloperRequest(
+             developer.photo,
+                 developer.name,
+                 developer.email,
+                 developer.phoneNumber,
+                 developer.companyName
+         ))
+
+
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

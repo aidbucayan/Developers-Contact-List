@@ -35,10 +35,6 @@ class AddDeveloperViewModel @Inject constructor(
                         }
                         .launchIn(viewModelScope)
                 }
-
-                is AddDeveloperIntent.None -> {
-
-                }
             }
         }
     }
@@ -46,8 +42,5 @@ class AddDeveloperViewModel @Inject constructor(
 }
 
 sealed class AddDeveloperIntent {
-
     object GetAddDeveloperIntents: AddDeveloperIntent()
-
-    object None: AddDeveloperIntent()
 }

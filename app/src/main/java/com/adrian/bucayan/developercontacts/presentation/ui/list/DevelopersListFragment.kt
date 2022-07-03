@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
@@ -14,6 +15,7 @@ import com.adrian.bucayan.developercontacts.common.Constants
 import com.adrian.bucayan.developercontacts.common.Resource
 import com.adrian.bucayan.developercontacts.databinding.FragmentDevelopersListBinding
 import com.adrian.bucayan.developercontacts.domain.model.Developer
+import com.adrian.bucayan.developercontacts.domain.model.StatusResponse
 import com.google.android.material.appbar.MaterialToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,10 +31,6 @@ class DevelopersListFragment : Fragment(R.layout.fragment_developers_list) {
     private var developerListAdapter : DeveloperListAdapter? = null
     private val viewModel: DevelopersListViewModel by  viewModels()
     var developerList : List<Developer>? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -76,6 +74,7 @@ class DevelopersListFragment : Fragment(R.layout.fragment_developers_list) {
                 }
             }
         }
+
     }
 
     private fun initViews() {
@@ -90,6 +89,9 @@ class DevelopersListFragment : Fragment(R.layout.fragment_developers_list) {
         toolbar.title = getString(R.string.app_name)
         val searchViewItem = toolbar.menu.findItem(R.id.appbar_search)
         val searchView = searchViewItem?.actionView as SearchView
+        val deleteImg : ImageView = requireActivity().findViewById(R.id.topAppBar_delete)
+        deleteImg.visibility = View.GONE
+
         if (isVisible) {
             toolbar.setNavigationIcon(R.drawable.baseline_contacts_black_24dp)
             toolbar.setNavigationIconTint(R.color.colorPrimaryVariant)
@@ -124,7 +126,7 @@ class DevelopersListFragment : Fragment(R.layout.fragment_developers_list) {
             addItemDecoration(itemDecoration)
 
             developerListAdapter = DeveloperListAdapter()
-            developerListAdapter!!.toSelectDeveloper = this@DevelopersListFragment::gotoSelectedDeveloper
+            developerListAdapter!!.toSelectDeveloper = this@DevelopersListFragment::toSelectedDeveloper
             adapter = developerListAdapter
         }
 
@@ -159,8 +161,9 @@ class DevelopersListFragment : Fragment(R.layout.fragment_developers_list) {
         }
     }
 
-    private fun gotoSelectedDeveloper(developer: Developer, position: Int?) {
+    private fun toSelectedDeveloper(developer: Developer, position: Int?) {
         Timber.e("developer = %s position = %s", developer.name, position)
+        toolbar.menu.clear()
         val bundle = Bundle()
         bundle.putParcelable(Constants.SELECTED_DEVELOPER, developer)
         findNavController().navigate(R.id.action_developersListFragment_to_editDeveloperFragment, bundle)

@@ -6,6 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.adrian.bucayan.developercontacts.common.Resource
 import com.adrian.bucayan.developercontacts.domain.model.Developer
+import com.adrian.bucayan.developercontacts.domain.model.StatusResponse
+import com.adrian.bucayan.developercontacts.domain.request.DeveloperRequest
+import com.adrian.bucayan.developercontacts.domain.use_case.DeleteDeveloperUseCase
 import com.adrian.bucayan.developercontacts.domain.use_case.GetDevelopersListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -33,18 +36,14 @@ class DevelopersListViewModel @Inject constructor(
                         }
                         .launchIn(viewModelScope)
                 }
-
-                is DeveloperIntent.None -> {
-
-                }
             }
         }
     }
+
+
 }
 
 sealed class DeveloperIntent {
-
     object GetDeveloperIntents: DeveloperIntent()
-
-    object None: DeveloperIntent()
 }
+

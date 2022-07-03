@@ -16,7 +16,7 @@ interface DeveloperContactsApi {
     @PUT("my/api/editDeveloper")
     suspend fun editDeveloper(@Body developerRequest: DeveloperRequest): StatusResponseDto
 
-    @GET("my/api/deleteDevelopers")
-    fun deleteDeveloper(@Body developerRequest: DeveloperRequest): StatusResponseDto
+    @POST("my/api/deleteDevelopers")
+    suspend fun deleteDeveloper(@Body developerRequest: DeveloperRequest): StatusResponseDto
 
 }

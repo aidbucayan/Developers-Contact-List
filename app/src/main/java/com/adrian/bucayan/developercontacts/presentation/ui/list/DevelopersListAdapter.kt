@@ -4,10 +4,12 @@ import android.annotation.SuppressLint
 import android.graphics.Rect
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.size.Scale
@@ -18,11 +20,14 @@ import com.adrian.bucayan.developercontacts.presentation.ui.util.adapter.BaseRec
 import com.adrian.bucayan.developercontacts.presentation.ui.util.adapter.BaseViewHolder
 import com.adrian.bucayan.developercontacts.presentation.ui.util.adapter.ViewHolderInitializer
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.util.*
 
 class DeveloperListAdapter : BaseRecyclerViewAdapter<Developer, DevelopersItemsBinding>() ,
     ViewHolderInitializer<Developer, DevelopersItemsBinding> {
 
     var toSelectDeveloper: ((Developer, Int) -> Unit)? = null
+
+    var toDeleteDeveloper: ((Developer, Int) -> Unit)? = null
 
     init { viewBindingInitializer = this }
 
@@ -43,7 +48,7 @@ class DeveloperListAdapter : BaseRecyclerViewAdapter<Developer, DevelopersItemsB
         val itemBinding: DevelopersItemsBinding = DevelopersItemsBinding.inflate(
             LayoutInflater.from(parent.context), parent, false)
 
-        return DeveloperListAdapterViewHolder(itemBinding, toSelectDeveloper)
+        return DeveloperListAdapterViewHolder(itemBinding, toSelectDeveloper, toDeleteDeveloper)
 
     }
 
@@ -52,9 +57,11 @@ class DeveloperListAdapter : BaseRecyclerViewAdapter<Developer, DevelopersItemsB
 @ExperimentalCoroutinesApi
 class DeveloperListAdapterViewHolder(
     viewBinding: DevelopersItemsBinding,
-    private val toSelectDeveloper: ((Developer, Int) -> Unit)? ) : BaseViewHolder<Developer, DevelopersItemsBinding>(viewBinding) {
+    private val toSelectDeveloper: ((Developer, Int) -> Unit)?,
+    private val  toDeleteDeveloper: ((Developer, Int) -> Unit)?
+)  : BaseViewHolder<Developer, DevelopersItemsBinding>(viewBinding) {
 
-    private val holder : LinearLayout = viewBinding.llDeveloperItemsHolder
+    private val holder : CardView = viewBinding.llDeveloperItemsHolder
     private val photo: ImageView = viewBinding.tvDeveloperPhoto
     private val name : TextView = viewBinding.tvDeveloperName
     private val email : TextView = viewBinding.tvDeveloperEmail
@@ -79,6 +86,12 @@ class DeveloperListAdapterViewHolder(
         holder.setOnClickListener{
             toSelectDeveloper?.invoke(item, adapterPosition)
         }
+
+        holder.setOnLongClickListener(OnLongClickListener { v ->
+            Toast.makeText(v.context, "Position is $adapterPosition", Toast.LENGTH_SHORT).show()
+            toDeleteDeveloper?.invoke(item, adapterPosition)
+            false
+        })
 
     }
 
