@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class DeveloperDto(
 
+    @JsonProperty("ID")
+    var ID : String?,
+
     @JsonProperty("Photo")
     var Photo: String?,
 
@@ -23,6 +26,7 @@ data class DeveloperDto(
 
 fun DeveloperDto.toDeveloper(): Developer {
     return  Developer(
+        id = ID,
         photo = Photo,
         name = Name,
         email = Email,

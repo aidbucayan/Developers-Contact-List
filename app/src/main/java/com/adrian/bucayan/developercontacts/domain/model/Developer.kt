@@ -7,6 +7,7 @@ import kotlinx.parcelize.Parcelize
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Parcelize
 data class Developer(
+    var id: String?,
     var photo: String?,
     var name: String?,
     var email: String?,

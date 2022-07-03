@@ -1,15 +1,22 @@
 package com.adrian.bucayan.developercontacts.data.remote
 
-import com.adrian.bucayan.developercontacts.data.dto.AddDeveloperDto
 import com.adrian.bucayan.developercontacts.data.dto.DeveloperDto
+import com.adrian.bucayan.developercontacts.data.dto.StatusResponseDto
+import com.adrian.bucayan.developercontacts.domain.request.DeveloperRequest
 import retrofit2.http.*
 
 interface DeveloperContactsApi {
 
-    @GET("my/api/getDevelopers/v1")
+    @GET("my/api/getDevelopers")
     suspend fun getDevelopers(): List<DeveloperDto>
 
     @POST("my/api/addDeveloper")
-    suspend fun addDevelopers(): AddDeveloperDto
+    suspend fun addDevelopers(@Body developerRequest: DeveloperRequest): StatusResponseDto
+
+    @PUT("my/api/editDeveloper")
+    suspend fun editDeveloper(@Body developerRequest: DeveloperRequest): StatusResponseDto
+
+    @GET("my/api/deleteDevelopers")
+    fun deleteDeveloper(@Body developerRequest: DeveloperRequest): StatusResponseDto
 
 }

@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.adrian.bucayan.developercontacts.R
+import com.adrian.bucayan.developercontacts.common.Constants
 import com.adrian.bucayan.developercontacts.common.Resource
 import com.adrian.bucayan.developercontacts.databinding.FragmentDevelopersListBinding
 import com.adrian.bucayan.developercontacts.domain.model.Developer
@@ -41,7 +42,7 @@ class DevelopersListFragment : Fragment(R.layout.fragment_developers_list) {
         binding.devListFab.setOnClickListener {
             findNavController().navigate(R.id.action_developersListFragment_to_addDeveloperFragment)
         }
-        // TODO viewModel.setGetDevelopersEvent(DeveloperIntent.GetDeveloperIntents)
+        viewModel.setGetDevelopersEvent(DeveloperIntent.GetDeveloperIntents)
     }
 
     private fun subscribeObservers() {
@@ -94,14 +95,12 @@ class DevelopersListFragment : Fragment(R.layout.fragment_developers_list) {
             toolbar.setNavigationIconTint(R.color.colorPrimaryVariant)
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    searchView.clearFocus()
                     showSearchResult(query)
-                    Timber.d("SUBMIT")
+                    searchView.clearFocus()
                     return false
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    //showSearchResult(newText)
                     return false
                 }
             })
@@ -121,7 +120,7 @@ class DevelopersListFragment : Fragment(R.layout.fragment_developers_list) {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
 
             val itemDecoration: DeveloperListAdapter.TopSpacingDecoration =
-                DeveloperListAdapter.TopSpacingDecoration(20)
+                DeveloperListAdapter.TopSpacingDecoration(0)
             addItemDecoration(itemDecoration)
 
             developerListAdapter = DeveloperListAdapter()
@@ -132,8 +131,14 @@ class DevelopersListFragment : Fragment(R.layout.fragment_developers_list) {
     }
 
     private fun showSearchResult(query: String?) {
+        var filteredDeveloperList: List<Developer>?
         if (query != null) {
-            developerList?.filter { it -> it.name!!.startsWith(query, true) }
+            filteredDeveloperList = developerList?.filter { it -> it.name!!.startsWith(query, true) }
+            if (!filteredDeveloperList.isNullOrEmpty()) {
+                developerListAdapter!!.submitList(filteredDeveloperList)
+            } else {
+                binding.devListTvEmptyMsg.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -155,7 +160,10 @@ class DevelopersListFragment : Fragment(R.layout.fragment_developers_list) {
     }
 
     private fun gotoSelectedDeveloper(developer: Developer, position: Int?) {
-
+        Timber.e("developer = %s position = %s", developer.name, position)
+        val bundle = Bundle()
+        bundle.putParcelable(Constants.SELECTED_DEVELOPER, developer)
+        findNavController().navigate(R.id.action_developersListFragment_to_editDeveloperFragment, bundle)
     }
 
     override fun onDestroyView() {

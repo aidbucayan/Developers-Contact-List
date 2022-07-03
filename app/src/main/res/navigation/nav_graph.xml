@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_developersListFragment_to_addDeveloperFragment"
             app:destination="@id/addDeveloperFragment" />
+        <action
+            android:id="@+id/action_developersListFragment_to_editDeveloperFragment"
+            app:destination="@id/editDeveloperFragment" />
     </fragment>
     <fragment
         android:id="@+id/addDeveloperFragment"
@@ -21,6 +24,15 @@
         tools:layout="@layout/fragment_add_developer" >
         <action
             android:id="@+id/action_addDeveloperFragment_to_developersListFragment"
+            app:destination="@id/developersListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editDeveloperFragment"
+        android:name="com.adrian.bucayan.developercontacts.presentation.ui.edit.EditDeveloperFragment"
+        android:label="fragment_edit_developer"
+        tools:layout="@layout/fragment_edit_developer" >
+        <action
+            android:id="@+id/action_editDeveloperFragment_to_developersListFragment"
             app:destination="@id/developersListFragment" />
     </fragment>
 </navigation>

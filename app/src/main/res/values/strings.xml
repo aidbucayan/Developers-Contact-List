@@ -25,5 +25,7 @@
     <string name="add">Add</string>
     <string name="add_developer">Add Developer</string>
     <string name="add_developer_success">Successfully added new Developer in Contacts</string>
+    <string name="save_changes">Save Changes</string>
 
+    <string name="update_contact">Update Contact</string>
 </resources>

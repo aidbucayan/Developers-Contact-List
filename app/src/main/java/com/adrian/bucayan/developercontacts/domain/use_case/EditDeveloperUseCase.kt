@@ -14,13 +14,13 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-class AddDeveloperUseCase @Inject constructor(private val repository: DeveloperContactsRepository,
-                                              @ApplicationContext private val appCtx: Context) {
+class EditDeveloperUseCase @Inject constructor(private val repository: DeveloperContactsRepository,
+                                               @ApplicationContext private val appCtx: Context) {
 
     operator fun invoke(developerRequest: DeveloperRequest): Flow<Resource<StatusResponse>> = flow {
         try {
             emit(Resource.Loading<StatusResponse>())
-            val getSearchedMovie = repository.addDeveloper(developerRequest).toAddDeveloper()
+            val getSearchedMovie = repository.editDeveloper(developerRequest).toAddDeveloper()
             emit(Resource.Success<StatusResponse>(getSearchedMovie))
         } catch(e: HttpException) {
             emit(Resource.Error<StatusResponse>(appCtx.getString(R.string.oops_something_went_wrong)))

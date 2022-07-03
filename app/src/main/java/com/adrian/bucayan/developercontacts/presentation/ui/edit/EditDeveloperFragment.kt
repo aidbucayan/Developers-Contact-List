@@ -1,4 +1,4 @@
-package com.adrian.bucayan.developercontacts.presentation.ui.add
+package com.adrian.bucayan.developercontacts.presentation.ui.edit
 
 import android.app.Activity
 import android.content.Context
@@ -6,16 +6,18 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import coil.load
 import coil.size.Scale
 import com.adrian.bucayan.developercontacts.R
+import com.adrian.bucayan.developercontacts.common.Constants
 import com.adrian.bucayan.developercontacts.common.Resource
-import com.adrian.bucayan.developercontacts.databinding.FragmentAddDeveloperBinding
+import com.adrian.bucayan.developercontacts.databinding.FragmentEditDeveloperBinding
+import com.adrian.bucayan.developercontacts.domain.model.Developer
 import com.adrian.bucayan.developercontacts.domain.model.StatusResponse
 import com.adrian.bucayan.developercontacts.domain.request.DeveloperRequest
 import com.adrian.bucayan.developercontacts.presentation.ui.util.PermissionUtility
@@ -26,67 +28,76 @@ import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class AddDeveloperFragment : Fragment(R.layout.fragment_add_developer) {
+class EditDeveloperFragment : Fragment(R.layout.fragment_edit_developer) {
 
-    private var _binding: FragmentAddDeveloperBinding? = null
+    companion object {
+        const val PHOTO_PICKER_REQUEST_CODE = 20
+    }
+
+    private var _binding: FragmentEditDeveloperBinding? = null
     private val binding get() = _binding!!
     private lateinit var toolbar: MaterialToolbar
-    private val viewModel: AddDeveloperViewModel by  viewModels()
-    private lateinit var selectedImage : Uri
+    private val viewModel: EditDeveloperViewModel by  viewModels()
+    private var selectedImage : Uri? = null
+    private lateinit var developer: Developer
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentAddDeveloperBinding.bind(view)
+        _binding = FragmentEditDeveloperBinding.bind(view)
+        developer = arguments?.getParcelable(Constants.SELECTED_DEVELOPER)!!
+        Timber.e("developer = ${developer.name}")
+        initDevData(developer)
         initViews()
         subscribeObservers()
 
-        requestPermission()
-
-        binding.ivAddDevPhoto.setOnClickListener {
+        binding.ivEditPhoto.setOnClickListener {
             requestPermission()
         }
 
-        binding.btnAddDev.setOnClickListener {
-            viewModel.setAddDevelopersEvent(AddDeveloperIntent.GetAddDeveloperIntents,
+        binding.btnEdit.setOnClickListener {
+            viewModel.setEditDevelopersEvent(EditDeveloperIntent.GetEditDeveloperIntents,
                 DeveloperRequest(
                     selectedImage.toString(),
-                    binding.tvAddDevName.text.toString(),
-                    binding.tvAddDevEmail.text.toString(),
-                    binding.tvAddDevPhone.text.toString(),
-                    binding.tvAddDevCompany.text.toString()
-                ))
+                    binding.tvEditName.text.toString(),
+                    binding.tvEditEmail.text.toString(),
+                    binding.tvEditPhone.text.toString(),
+                    binding.tvEditCompany.text.toString()
+                )
+            )
+
+            findNavController().navigate(R.id.action_editDeveloperFragment_to_developersListFragment)
         }
     }
 
-    private fun initViews() {
-        setHasOptionsMenu(true)
-        displaySearchViewMenuItem()
-    }
-
-    private fun displaySearchViewMenuItem() {
-        toolbar = requireActivity().findViewById(R.id.topAppBar)
-        toolbar.inflateMenu(R.menu.menu_main)
-        toolbar.title = getString(R.string.add)
-        toolbar.menu.clear()
+    private fun initDevData(developer: Developer) {
+        binding.ivEditPhoto.load(developer.photo) {
+            crossfade(true)
+            placeholder(R.drawable.img)
+            scale(Scale.FILL)
+        }
+        binding.tvEditName.setText(developer.name)
+        binding.tvEditEmail.setText(developer.email)
+        binding.tvEditPhone.setText(developer.phoneNumber)
+        binding.tvEditCompany.setText(developer.companyName)
     }
 
     private fun subscribeObservers() {
-        viewModel.dataStateAddDeveloper.observe(viewLifecycleOwner) { dataStateAdd ->
-            when (dataStateAdd) {
+        viewModel.dataStateEditDeveloper.observe(viewLifecycleOwner) { dataStateEdit ->
+            when (dataStateEdit) {
 
                 is Resource.Success<StatusResponse> -> {
-                    Timber.e("dataStateDeveloper SUCCESS")
-                    dataStateAdd.data?.status?.let { requireContext().applicationContext.toast(it, true) }
-                    findNavController().navigate(R.id.action_addDeveloperFragment_to_developersListFragment)
+                    Timber.e("dataStateEdit SUCCESS")
+                    dataStateEdit.data?.status?.let { requireContext().applicationContext.toast(it, true) }
+                    findNavController().navigate(R.id.action_editDeveloperFragment_to_developersListFragment)
                 }
 
                 is Resource.Error -> {
-                    Timber.e("dataStateAdd ERROR %s", dataStateAdd.message)
-                    requireContext().applicationContext.toast(dataStateAdd.message.toString(), true)
+                    Timber.e("dataStateEdit ERROR %s", dataStateEdit.message)
+                    requireContext().applicationContext.toast(dataStateEdit.message.toString(), true)
                 }
 
                 is Resource.Loading -> {
-                    Timber.e("dataStateDeveloper LOADING")
+                    Timber.e("dataStateEdit LOADING")
                 }
             }
         }
@@ -109,7 +120,7 @@ class AddDeveloperFragment : Fragment(R.layout.fragment_add_developer) {
         val mimeTypes = arrayOf("image/jpeg", "image/png")
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
         // Launching the Intent
-        startActivityForResult(intent, Companion.PHOTO_PICKER_REQUEST_CODE)
+        startActivityForResult(intent, PHOTO_PICKER_REQUEST_CODE)
     }
 
     override fun onRequestPermissionsResult(
@@ -129,11 +140,11 @@ class AddDeveloperFragment : Fragment(R.layout.fragment_add_developer) {
         if (resultCode == Activity.RESULT_OK) when (requestCode) {
             PHOTO_PICKER_REQUEST_CODE -> {
                 //data.getData returns the content URI for the selected Image
-                selectedImage = data?.data!!
+                val selectedImage: Uri? = data?.data
                 Timber.e("selectedImage = %s", selectedImage)
 
                 if (selectedImage != null) {
-                    binding.ivAddDevPhoto.load(selectedImage) {
+                    binding.ivEditPhoto.load(selectedImage) {
                         crossfade(true)
                         placeholder(R.drawable.img)
                         scale(Scale.FILL)
@@ -144,6 +155,17 @@ class AddDeveloperFragment : Fragment(R.layout.fragment_add_developer) {
         }
     }
 
+    private fun initViews() {
+        setHasOptionsMenu(true)
+        displaySearchViewMenuItem()
+    }
+
+    private fun displaySearchViewMenuItem() {
+        toolbar = requireActivity().findViewById(R.id.topAppBar)
+        toolbar.inflateMenu(R.menu.menu_main)
+        toolbar.title = getString(R.string.update_contact)
+        toolbar.menu.clear()
+    }
     private fun Context.toast(message: CharSequence, isLengthLong: Boolean = true) =
         Toast.makeText(
             this, message, if (isLengthLong) {
@@ -156,10 +178,6 @@ class AddDeveloperFragment : Fragment(R.layout.fragment_add_developer) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        const val PHOTO_PICKER_REQUEST_CODE = 20
     }
 
 }

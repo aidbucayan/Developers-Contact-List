@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Parcelize
-data class AddDeveloper(
+data class StatusResponse(
     var status: String?
 ): Parcelable {
 
