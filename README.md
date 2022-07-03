@@ -9,7 +9,7 @@ This android project is written in Kotlin which demonstrates MVVM/MVI design arc
 Design Pattern
 The project used MVI and Repository design pattern approach. State in app is defined by user's action which is called intent (not the android Intent class) which the ViewModel will get and decide the state to be reflected to the View. Intent represents an intention or a desire to perform an action, either by the user or the app itself. For every action, a View receives an Intent. The Presenter observes the Intent, and Models translate it into a new state.
 
-## Libraries
+# Libraries
 - [Jetpack Hilt](https://dagger.dev/hilt/) - Dependency injection
 - [Retrofit](https://square.github.io/retrofit/)  - API http network requests.
 - [OkHttp](https://square.github.io/okhttp/) - Use as http client for logging interceptor.
