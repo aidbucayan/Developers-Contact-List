@@ -20,5 +20,3 @@ The project used MVI and Repository design pattern approach. State in app is def
                                                                                              
 - [Coutine Flow](https://developer.android.com/kotlin/flow) - In coroutines, a flow is a type that can emit multiple values sequentially.
                            
-
-
