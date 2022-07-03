@@ -19,5 +19,6 @@ The project used MVI and Repository design pattern approach. State in app is def
 - [Material](https://material.io/) Design - Google's material design ui.  
                                                                                              
 - [Coutine Flow](https://developer.android.com/kotlin/flow) - In coroutines, a flow is a type that can emit multiple values sequentially.
-                           
+               
+ # Sample Screen 
 ![290719669_607689433891986_8075612724272037089_n](https://user-images.githubusercontent.com/15811376/177058343-2c001eff-b589-4f44-ab77-7d93061aa289.jpg)
